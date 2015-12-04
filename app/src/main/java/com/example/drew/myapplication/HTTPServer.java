@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 enum Verb {
-    GET, POST, ERROR, PATCH
+    GET, POST, ERROR, PATCH, PUT, DELETE
 }
 
 class HTTPRequest {
@@ -63,6 +63,8 @@ class HTTPRequest {
             case "GET": request.verb = Verb.GET; break;
             case "POST": request.verb = Verb.POST; break;
             case "PATCH": request.verb = Verb.PATCH; break;
+            case "DELETE": request.verb = Verb.DELETE; break;
+            case "PUT": request.verb = Verb.PUT; break;
             default: request.verb = Verb.ERROR; break;
         }
 
@@ -449,6 +451,20 @@ class HTTPWorker implements Runnable {
                         ostream.flush();
                         socket.close();
                         return;
+                    } else if (request.verb == Verb.DELETE) {
+
+                        File file = new File(rootPath, request.resourceName);
+                        if (file.exists()) {
+                            DebugBroadcaster.message("Deleting file: " + file.getName());
+                            file.delete();
+                        } else {
+                            DebugBroadcaster.message("Failed to delete: " + file.getName());
+                        }
+
+                        // TODO: send response
+                        socket.close();
+                        return;
+
                     }
 
                 } catch (IOException e) {
