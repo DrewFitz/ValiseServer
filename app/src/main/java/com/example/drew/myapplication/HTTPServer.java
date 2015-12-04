@@ -465,6 +465,26 @@ class HTTPWorker implements Runnable {
                         socket.close();
                         return;
 
+                    } else if (request.verb == Verb.PUT) {
+
+                        String s = request.resourceName;
+                        String[] components = s.split("/");
+                        String newName = components[components.length-1];
+                        String oldName = components[components.length-2];
+                        String oldFilename = s.replace("/" + newName, "");
+                        String newFilename = s.replace("/" + oldName, "");
+                        File file = new File(rootPath, oldFilename);
+                        File newFile = new File(rootPath, newFilename);
+
+                        if (file.renameTo(newFile)) {
+                            DebugBroadcaster.message("File rename success.");
+                        } else {
+                            DebugBroadcaster.message("File rename fail.");
+                        }
+
+                        socket.close();
+                        return;
+
                     }
 
                 } catch (IOException e) {
