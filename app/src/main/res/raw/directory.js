@@ -4,20 +4,19 @@ function $id(id){
     return document.getElementById(id);
 }
 function DirParse (msg) {
-    var marray = msg.split("!**");
-    for(var i = 0; i < (marray.length-1); i++){
-        DirOutput(marray[i]);
+    var obj = JSON.parse(msg);
+    for (var i = 0, f; f = obj[i]; i++){
+        DirOutput(f);
     }
 
 
 }
 function DirOutput(msg){
     var d = $id("dirprev");
-    var marray = msg.split("/*");
     var duplicate = false;
     if(nodes.length != 0){
         for(var i = 0; i < nodes.length; i++){
-            if(nodes[i] == marray[0]){
+            if(nodes[i].filepath == msg.filepath){
                 duplicate = true;
                 break;
             }
@@ -29,15 +28,15 @@ function DirOutput(msg){
     if(duplicate == false){
         var child = document.createElement("item");
         child.className = "item";
-        child.setAttribute("id", marray[0]);
-        child.setAttribute("link", marray[1]);
+        child.setAttribute("id", msg.filepath);
+        child.setAttribute("link", msg.url);
         child.style.display = "default";
         var grandchild = document.createElement('a');
-        grandchild.innerHTML = marray[0];
-        grandchild.href = marray[1];
+        grandchild.innerHTML = msg.name;
+        grandchild.href = msg.url;
         child.appendChild(grandchild);
         d.appendChild(child);
-        nodes.push(marray[0]);
+        nodes.push(msg);
     }
 
 
@@ -67,7 +66,7 @@ function RefreshListHandler(e){
             DirParse(xhr.responseText);
         }
     };
-    xhr.open("PATCH", window.location.pathname, true);
+    xhr.open("GET", window.location.pathname + ".json", true);
     xhr.send();
 
     }

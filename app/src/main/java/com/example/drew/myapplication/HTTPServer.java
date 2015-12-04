@@ -25,6 +25,7 @@ class HTTPRequest {
     public Verb verb;
     public String resourceName;
     public String bodyString;
+    public Boolean isJSON = false;
 
     HTTPRequest() {
         headers = new HashMap<>();
@@ -67,6 +68,12 @@ class HTTPRequest {
 
         try {
             request.resourceName = URLDecoder.decode(resource, "UTF-8");
+            //
+            if(HTMLfrags.isjsonRequest(request.resourceName)){
+                request.resourceName = HTMLfrags.stripjsonRequest(request.resourceName);
+                request.isJSON = true;
+            }
+            //
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -240,10 +247,17 @@ class HTTPWorker implements Runnable {
     private void sendDataForRequest(HTTPRequest request) {
         try {
             OutputStream ostream = socket.getOutputStream();
+            String directoryString = null;
             byte[] fileBytes = null;
 
             //String directoryString = generateDirectoryListing(request.resourceName);
-            String directoryString = HTMLGen.generateDirectoryListing(request.resourceName, rootPath);
+            String test = request.resourceName;
+            if(request.isJSON){
+                directoryString = HTMLGen.generateDirectoryListing2(request.resourceName, rootPath);
+            } else {
+
+                directoryString = HTMLGen.generateDirectoryListing(request.resourceName, rootPath);
+            }
 
             if (directoryString == null) {
                 fileBytes = retrieveFile(request.resourceName);
@@ -278,7 +292,7 @@ class HTTPWorker implements Runnable {
     private void sendDataForGENRequest(HTTPRequest request) {
         try {
             OutputStream ostream = socket.getOutputStream();
-            byte[] fileBytes = null;
+            byte[] fileBytes;
 
 
 

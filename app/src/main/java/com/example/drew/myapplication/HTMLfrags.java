@@ -1,6 +1,9 @@
 package com.example.drew.myapplication;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.regex.Pattern;
 
 /**
  * Created by Paul on 11/21/2015.
@@ -40,6 +43,37 @@ public class HTMLfrags {
 
 
 
+
+    }
+    public static boolean isjsonRequest(String resource){
+        return resource.endsWith(".json");
+    }
+    public static String stripjsonRequest(String resource){
+        String resc = resource.replace(".json", "");
+
+
+
+        return resc;
+    }
+    public static String returnjsonObject(File file, String rootPath){
+        String result = null;
+        String abspath = null;
+        String url = null;
+        String name = null;
+        try {
+
+            abspath = file.getAbsolutePath().replace(rootPath, "");
+            url = URLEncoder.encode(file.getAbsolutePath().replace(rootPath, ""), "UTF-8").replace("%2F", "/");
+            name = file.getName();
+            result = "{\"filepath\":\"" + abspath + "\",";
+            result += "\"url\":\"" + url + "\",";
+            result += "\"name\":\""+ name + "\"}";
+        } catch (UnsupportedEncodingException e) {
+//                DebugBroadcaster.message("Unsupported encoding exception");
+            return null;
+        }
+
+        return result;
 
     }
 

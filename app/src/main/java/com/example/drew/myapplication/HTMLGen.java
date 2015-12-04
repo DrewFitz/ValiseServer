@@ -134,25 +134,25 @@ public class HTMLGen {
     }
 
     public static String generateDirectoryListing2(String filename, String rootPath) {
-        HTMLGen butt = new HTMLGen();
+        HTMLGen gen = new HTMLGen();
         File dir = new File(rootPath, filename);
         if (!dir.isDirectory()) return null;
 
         File[] files = dir.listFiles();
         String result = new String();
+        result += "[";
+        int i = 0;
 
         for (File file : files) {
-            try {
-                result += file.getAbsolutePath().replace(rootPath, "") + "/*";
-                result += URLEncoder.encode(file.getAbsolutePath().replace(rootPath, ""), "UTF-8").replace("%2F", "/") + "/*";
-                result += "!**";
-                //result += "<li><a href=\"/" + URLEncoder.encode(file.getAbsolutePath().replace(rootPath, ""), "UTF-8").replace("%2F", "/") + "\">"
-                //        + file.getName() + "</a></li>\n";
-            } catch (UnsupportedEncodingException e) {
-//                DebugBroadcaster.message("Unsupported encoding exception");
-                return null;
-            }
+            if(i != 0)
+                result += ",";
+
+            result += HTMLfrags.returnjsonObject(file, rootPath);
+            i++;
+
+
         }
+        result += "]";
 
         return result;
     }
