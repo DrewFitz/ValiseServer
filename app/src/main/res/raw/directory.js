@@ -4,6 +4,7 @@ function $id(id){
 function DirParse (msg) {
     var obj = JSON.parse(msg);
     var d = $id("dirprev");
+    var child = d.firstChild;
     while( child ){
         d.removeChild(child);
         child = d.firstChild;
