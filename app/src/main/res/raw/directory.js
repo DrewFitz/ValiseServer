@@ -1,10 +1,13 @@
-var nodes = [];
-
 function $id(id){
     return document.getElementById(id);
 }
 function DirParse (msg) {
     var obj = JSON.parse(msg);
+    var d = $id("dirprev");
+    while( child ){
+        d.removeChild(child);
+        child = d.firstChild;
+    }
     for (var i = 0, f; f = obj[i]; i++){
         DirOutput(f);
     }
@@ -13,32 +16,18 @@ function DirParse (msg) {
 }
 function DirOutput(msg){
     var d = $id("dirprev");
-    var duplicate = false;
-    if(nodes.length != 0){
-        for(var i = 0; i < nodes.length; i++){
-            if(nodes[i].filepath == msg.filepath){
-                duplicate = true;
-                break;
-            }
 
-        }
-
-
-    }
-    if(duplicate == false){
-        var child = document.createElement("item");
-        child.className = "item";
-        child.setAttribute("id", msg.filepath);
-        child.setAttribute("link", msg.url);
-        child.style.display = "default";
-        var grandchild = document.createElement('a');
-        grandchild.innerHTML = msg.name;
-        grandchild.href = msg.url;
-        child.appendChild(grandchild);
-        d.appendChild(child);
-        nodes.push(msg);
-    }
-
+    var child = document.createElement("item");
+    child.className = "item";
+    child.setAttribute("id", msg.filepath);
+    child.setAttribute("link", msg.url);
+    child.style.display = "default";
+    var grandchild = document.createElement('a');
+    grandchild.innerHTML = msg.name;
+    grandchild.href = msg.url;
+    child.appendChild(grandchild);
+    d.appendChild(child);
+    
 
 
 }
