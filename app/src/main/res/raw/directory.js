@@ -27,6 +27,25 @@ function DirOutput(msg){
     grandchild.innerHTML = msg.name;
     grandchild.href = msg.url;
     child.appendChild(grandchild);
+
+    var gcdelete = document.createElement('a');
+    gcdelete.innerHTML = "delete";
+    gcdelete.href = "#";
+    gcdelete.style.padding="5px";
+    gcdelete.onclick = function(){DeleteFile(msg.filepath);};
+
+
+    var gcrename = document.createElement('a');
+    gcrename.innerHTML = "rename";
+    gcrename.href = "#";
+    gcrename.style.padding="5px";
+    gcrename.onclick = function(){RenameFile(msg.filepath);};
+
+
+    child.appendChild(gcdelete);
+
+    child.appendChild(gcrename);
+
     d.appendChild(child);
     
 
@@ -90,4 +109,27 @@ function UploadFile(file){
         xhr.open("POST", window.location.pathname);
         xhr.send(formData);
     }
+}
+function DeleteFile(target){
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        RefreshListHandler();
+    }
+    xhr.open("DELETE", target);
+    xhr.send();
+}
+function RenameFile(target){
+    var newname = prompt("Please enter the new filename", target);
+    if(newname!= null){
+        var resc = target + "/" + newname;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+                RefreshListHandler();
+            }
+        xhr.open("put", resc);
+        xhr.send();
+    }
+
+
 }
