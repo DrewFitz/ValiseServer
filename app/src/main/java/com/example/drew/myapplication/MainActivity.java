@@ -42,26 +42,6 @@ public class MainActivity extends Activity implements DebugListener {
         DebugBroadcaster.addListener(this);
 
 
-        String IP = null;
-        WifiManager wim = (WifiManager) getSystemService(WIFI_SERVICE);
-        int inet = wim.getConnectionInfo().getIpAddress();
-        IP += inet;
-        /*
-        try{
-
-
-            //byte[] ipadd;
-
-            //inet = InetAddress.get();
-            //IP = InetAddress.getLocalHost().toString();
-        } catch (UnknownHostException e){
-            e.printStackTrace();
-
-        }*/
-        if(IP != null){
-            ipView = (TextView) findViewById(R.id.localIPText);
-            ipView.setText(IP);
-        }
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
         String path = prefs.getString(PATH_KEY, Environment.getExternalStorageDirectory().getAbsolutePath());

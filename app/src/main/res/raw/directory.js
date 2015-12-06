@@ -25,21 +25,21 @@ function DirOutput(msg){
     child.style.display = "default";
     var grandchild = document.createElement('a');
     grandchild.innerHTML = msg.name;
-    grandchild.href = msg.url;
+    grandchild.href = "/" + msg.url;
     child.appendChild(grandchild);
 
     var gcdelete = document.createElement('a');
     gcdelete.innerHTML = "delete";
     gcdelete.href = "#";
     gcdelete.style.padding="5px";
-    gcdelete.onclick = function(){DeleteFile(msg.filepath);};
+    gcdelete.onclick = function(){DeleteFile(msg.url);};
 
 
     var gcrename = document.createElement('a');
     gcrename.innerHTML = "rename";
     gcrename.href = "#";
     gcrename.style.padding="5px";
-    gcrename.onclick = function(){RenameFile(msg.filepath);};
+    gcrename.onclick = function(){RenameFile(msg.url);};
 
 
     child.appendChild(gcdelete);
@@ -116,18 +116,18 @@ function DeleteFile(target){
     xhr.onreadystatechange = function(){
         RefreshListHandler();
     }
-    xhr.open("DELETE", target);
+    xhr.open("DELETE", "/"+target);
     xhr.send();
 }
 function RenameFile(target){
-    var newname = prompt("Please enter the new filename", target);
+    var newname = prompt("Please enter the new filename", "");
     if(newname!= null){
         var resc = target + "/" + newname;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
                 RefreshListHandler();
             }
-        xhr.open("put", resc);
+        xhr.open("put", "/"+resc);
         xhr.send();
     }
 

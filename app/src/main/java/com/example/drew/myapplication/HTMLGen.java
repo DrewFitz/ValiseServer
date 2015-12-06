@@ -31,38 +31,11 @@ public class HTMLGen {
         File[] files = dir.listFiles();
 
         String result = "<html><head><title>Directory - " + filename + "</title>\n"
-                //+"<link href=\"res/raw/directorystyle.css\" rel=\"stylesheet\" type=\"text/css\">\n"
                 + "</head>\n"
                 + "<style>" + style + "</style>\n"
                 + "<script>" + script + "</script>\n"
                 + "<body>\n"
                 + "<h1>Directory - " + filename + "</h1>\n";
-        //+ "<ul>\n";
-
-        /*
-
-        for (File file : files) {
-            try {
-                result += "<li><a href=\"/" + URLEncoder.encode(file.getAbsolutePath().replace(rootPath, ""), "UTF-8").replace("%2F", "/") + "\">"
-                        + file.getName() + "</a></li>\n";
-            } catch (UnsupportedEncodingException e) {
-//                DebugBroadcaster.message("Unsupported encoding exception");
-                return null;
-            }
-        }
-
-        result += "</ul>\n<hr />\n";
-
-        /*
-
-        result += "<form action=\"" + filename + "\" method=\"post\" enctype=\"multipart/form-data\">\n" +
-                "    <label for=\"file\">Upload a file:</label>\n" +
-                "    <input type=\"file\" name=\"file\" id=\"file\" />\n" +
-                "    <input type=\"submit\" name=\"submit\" value=\"Upload\" />\n";
-
-
-               */
-
 
         result += HTMLfrags.getUpload(filename);
 
