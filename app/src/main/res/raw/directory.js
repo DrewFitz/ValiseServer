@@ -33,6 +33,7 @@ function DirOutput(msg){
     gcdelete.href = "#";
     gcdelete.style.padding="5px";
     gcdelete.onclick = function(){DeleteFile(msg.url);};
+    gcdelete.className = "delete";
 
 
     var gcrename = document.createElement('a');
@@ -40,6 +41,7 @@ function DirOutput(msg){
     gcrename.href = "#";
     gcrename.style.padding="5px";
     gcrename.onclick = function(){RenameFile(msg.url);};
+    gcrename.className = "rename";
 
 
     child.appendChild(gcdelete);
